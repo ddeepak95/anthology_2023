@@ -1,6 +1,8 @@
 ---
-title: "Article Title 2"
+title: "Hate Crimes Viz"
 jupyter: python3
+execute: 
+  freeze: true
 format:
   html:
     code-fold: true

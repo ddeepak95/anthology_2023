@@ -1,6 +1,8 @@
 ---
-title: "I am a sub module article"
+title: "Coming Out"
 jupyter: python3
+execute: 
+  freeze: true
 format:
   html:
     code-fold: true

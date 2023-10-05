@@ -1,6 +1,8 @@
 ---
-title: "Article Title 3"
+title: "Mystery of Egypt"
 jupyter: python3
+execute: 
+  freeze: true
 format:
   html:
     code-fold: true
