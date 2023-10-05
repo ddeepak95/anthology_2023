@@ -2,9 +2,9 @@
   {
     "listing": "/articles/index.html",
     "items": [
-      "/articles/article-1/index.html",
       "/articles/article-2/index.html",
-      "/articles/article-3/index.html"
+      "/articles/article-3/index.html",
+      "/articles/article-1/index.html"
     ]
   }
 ]
