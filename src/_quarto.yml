@@ -1,0 +1,29 @@
+project:
+  type: website
+  output-dir: public
+
+execute:
+  freeze: auto
+
+website:
+  title: "2023 CESTA Research Anthology"
+  favicon: "utils/imgs/favicon.ico"
+
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+  search:
+    location: navbar
+    type: textbox
+
+format:
+  html:
+    include-in-header:
+      - text: |
+          <script src="/utils/scripts/insert-header.js"></script>
+    theme:
+      - default
+      - "utils/style/style.scss"
+    toc: true
+    pagetitle: "{{< meta title >}} | CESTA Research Anthology"

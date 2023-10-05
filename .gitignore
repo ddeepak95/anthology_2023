@@ -1,0 +1,5 @@
+_freeze
+.quarto
+.venv
+index_files
+public
