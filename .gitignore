@@ -3,3 +3,4 @@ _freeze
 .venv
 index_files
 public
+/.luarc.json

@@ -1,4 +1,5 @@
 ---
-title: CESTA Research Anthology 2023 Edition 
-listing: default
+title: Research Anthology 2023 Development Repository
 ---
+
+### [View all the articles](./articles/)
