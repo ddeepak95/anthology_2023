@@ -1,10 +1,10 @@
 [
   {
-    "listing": "/articles/index.html",
+    "listing": "/index.html",
     "items": [
-      "/articles/article-2/index.html",
-      "/articles/article-3/index.html",
-      "/articles/article-1/index.html"
+      "/article-2/index.html",
+      "/article-3/index.html",
+      "/article-1/index.html"
     ]
   }
 ]
