@@ -4,3 +4,5 @@ _freeze
 index_files
 public
 /.luarc.json
+/.quarto/
+
