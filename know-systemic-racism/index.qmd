@@ -1,0 +1,256 @@
+---
+title: "Know Systemic Racism"
+jupyter: python3
+execute: 
+  freeze: true
+  echo: false
+format:
+  html:
+    code-fold: true
+image: "data/ca_map.png"
+multipleLeads: true
+lead:
+  - name: Nicole Coleman
+    designation: Digital Research Architect
+  - name: Felicia Smith
+    designation: Racial Justice and Social Equity Librarian
+multipleInterns: true
+intern:
+  - name: Tracy Wei
+    quarter: Winter/Spring, 2023
+  - name: Anabelle Colmenares
+    quarter: Summer, 2023
+---
+## Project Description
+Know Systemic Racism, the creation of Felicia Smith, Stanford’s inaugural Racial Justice and Social Equity Librarian, aims to “humanize the harm” against Black people in California by focusing on interconnections of discriminatory systems that have been shaped by racist policies and practices of individuals and institutions across centuries. This summer, Felicia Smith is collaborating with Nicole Coleman, Digital Research Architect for the Stanford University Libraries and Research Director for Humanities+Design at CESTA. The summer 2023 project for Know Systemic Racism Data Lab is “Know More Names,” a data curation and public information discovery environment that uses names of people, places, events, and objects as an entry point to reveal connections between harmful and racist policies and practices in California. The goal of this first iteration of “Know More Names” is to enable citizens, activists, journalists, and lawmakers to discover, use, and contribute to factual data that connects legislation, law enforcement policy, the use of military equipment in policing, and deaths that occur through police interaction in California. The focus on policing and race is not the end goal of the project, but a starting point that reflects the origins of the Stanford Libraries’ Know Systemic Racism project in response to the death of George Floyd and the attention to Floyd’s death brought to the connections between the history of policing and race in this country. The students have worked with library catalogers, archivists and data scientists, community activists, and the Stanford Center for Racial Justice to bring this project together.
+
+## Visualizing Data About the Militarization of Police [by Tracy Wei]{.section-author}
+
+As a research intern for Know Systemic Racism, I built a wireframe and coded a web-based application that makes the military equipment inventory of California law enforcement agencies visible to legislators and citizens. My work directly contributes to a project with the Electronic Frontier Foundation and American Friends Service Committee that demonstrates the militarization of police using records of military equipment. My initial task involved designing a wireframe in Figma for the web application, which would be used as a foundation for the rest of the project. This wireframe included a map view page for users to filter and select specific law enforcement agencies to learn more details about their respective inventories. It also included a gallery view of military equipment that filters inventory by where the user lives so that users can learn more about the military equipment in their local law enforcement agencies and how much money is being put towards these equipment.
+
+In order to gather data on the military equipment of law enforcement agencies, I examined policy manuals to record the equipment owned by law enforcement agencies and the associated costs. The web application was developed using Streamlit, which supports data-driven web applications coded in the programming language Python. I used the equipment list to create a table view that showcases all the equipment with details including manufacturer, cost and images. To help users look for specific categories of military equipment and certain companies, I added dropdown menus that allow the user to filter the inventory based on certain criteria. Using the Plotly library, I also built a map view of California with its counties colored by population, and its law enforcement agencies as points on the map, with the goal of displaying the data and military inventory of these law enforcement agencies on an individual level. The project’s next steps are to create data visualizations for the quantity and cost of military equipment for both individual law enforcement agencies and the aggregate law enforcement system.
+
+
+## From Data Exploration to Presentation [by Anabelle Colmenares]{.section-author}
+This summer, the KSR focused on four datasets: fatal encounters with the police in the United States, data about law enforcement agencies (LEAs) in California, policy manuals of these LEAs, and military equipment policies of these LEAs. To explore these datasets, I first created a platform for KSR to share their data projects. Second, I created pipelines for data extraction and visualization. Finally, I created a website that tied all of the datasets together.
+
+We started the data exploration process by creating a data website for all of KSR’s data-related projects in order to have a platform where we could quickly display and share coding projects. I did this by integrating GitHub Pages, Quarto, and GitHub Action, giving us the ability to easily update the website and render code.
+
+After this, my next set of tasks involved establishing pipelines for data visualization, analysis, and extraction. I experimented with different visualization libraries, such as Plotly, Observable Plot, and others, to see which would be better suited for our needs. I also experimented with pulling data from Google Sheets and Wikidata. Pulling data directly from Google Sheets is essential for us because much of the data we use is created by activist groups, and such groups often store data in Google Sheets. Likewise, Wikidata is a community-constructed data source, which we entered data into and want to pull from in order to create applications and visualizations.
+
+Finally, we decided to build a web application. This web application fulfilled two main objectives: to integrate the 4 main aforementioned datasets and make this information accessible to the common public. We decided this application would have four main information sections corresponding to the four datasets. Within each section, there will be an information card for each entity (for instance, the “Law Enforcement Agencies” section will include information cards for each LEA within California). If there is data within an information card that is tied to another section, clicking on this data will take you to their information pages. For instance, clicking on a particular military equipment item within the information card of a LEA will take you to the page within our website of that military equipment. With all of this, we aim to empower people with a more concentrated and accessible version of this information.
+
+
+
+## Data Visualizations
+Below are some of the notable table and visualizations that we generated through the internship. These tables and visualizations are generated using the [Fatal Encounters Dataset](https://docs.google.com/spreadsheets/d/1dKmaV_JiWcG8XBoRgP8b4e9Eopkpgt7FL7nyspvzAsE/edit#gid=0) from [fatalencounters.org](https://fatalencounters.org/). As seen in the bar charts, this dataset ranges from 2000-2021.
+
+### Mapping Fatal Encounters 
+#### Entire U.S. 
+```{python}
+import pandas as pd
+import plotly.express as px
+from urllib.request import urlopen
+import json
+```
+
+```{python}
+sheet_id = "1dKmaV_JiWcG8XBoRgP8b4e9Eopkpgt7FL7nyspvzAsE"
+sheet_name = "sample_1"
+url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+df = pd.read_csv(url)
+ojs_define(fe_data = df)
+
+df['Age'].fillna('Not in Fatal Encounters dataset')
+df_ca_only = df.loc[df['State'] == 'CA']
+
+```
+
+```{python}
+with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+    counties = json.load(response)
+    # ** the file below is hosted locally but I could alternatively write code that removes all the non-CA fip codes from the DF 
+df_counties_ca = pd.read_csv("data/one_col_raw.githubusercontent.com_plotly_datasets_master_fips-unemp-16.csv",  
+                   dtype={"fips": str})
+```
+
+```{python}
+fig_scatter_all = px.scatter_mapbox(df, 
+                  lat='Latitude',
+                  lon='Longitude',
+#                   color="Policy_Manual_Exists", 
+                  hover_name='Name',
+                  hover_data={ 
+                                  'Age': True, 
+                                  'Gender': True, 
+                                  'Race with imputations': True, 
+                                  ' Date of injury resulting in death (month/day/year)': True, 
+                                  'Agency or agencies involved': True,
+                                  'Latitude':False,
+                                  'Longitude': False
+                              },
+                  color_continuous_scale=px.colors.cyclical.IceFire, 
+                  size_max=15, 
+                  zoom=10,
+                  mapbox_style="carto-positron")
+
+df_all_counties = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv",
+                   dtype={"fips": str})
+
+fig_all_counties = px.choropleth_mapbox(df_all_counties, 
+                           geojson=counties, 
+                           locations='fips',
+                           color_continuous_scale="Viridis",
+                           range_color=(0, 12),
+                           mapbox_style="carto-positron",
+                           zoom=2, 
+                           center = {"lat": 50.0902, "lon": -120.7129},
+                           opacity=0.5,
+                          )
+
+fig_all_counties.update_geos(fitbounds="locations", visible=False)
+fig_all_counties.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+fig_all_counties.add_trace(
+    fig_scatter_all.data[0]
+)
+
+# customize hover label appearance
+fig_all_counties.update_layout(
+    hoverlabel=dict(
+        bgcolor="white",
+        font_size=12,
+        font_family="Rockwell"
+    )
+)
+```
+
+#### California only
+```{python}
+fig_scatter = px.scatter_mapbox(df_ca_only, 
+                  lat='Latitude',
+                  lon='Longitude',
+#                   color="Policy_Manual_Exists", 
+                  hover_name='Name',
+                  hover_data={ 
+                                  'Age': True, 
+                                  'Gender': True, 
+                                  'Race with imputations': True, 
+                                  ' Date of injury resulting in death (month/day/year)': True, 
+                                  'Agency or agencies involved': True,
+                                  'Latitude':False,
+                                  'Longitude': False
+                              },
+                  color_continuous_scale=px.colors.cyclical.IceFire, 
+                  size_max=15, 
+                  zoom=10,
+                  mapbox_style="carto-positron")
+
+fig_ca_counties = px.choropleth_mapbox(df_counties_ca, 
+                           geojson=counties, 
+                           locations='fips',
+                           color_continuous_scale="Viridis",
+                           range_color=(0, 12),
+                           mapbox_style="carto-positron",
+                           zoom=4.7, 
+                           center = {"lat": 37.0902, "lon": -120.7129},
+                           opacity=0.5,
+                          )
+
+fig_ca_counties.update_geos(fitbounds="locations", visible=False)
+fig_ca_counties.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+fig_ca_counties.add_trace(
+    fig_scatter.data[0]
+)
+
+# customize hover label appearance
+fig_ca_counties.update_layout(
+    hoverlabel=dict(
+        bgcolor="white",
+        font_size=12,
+        font_family="Rockwell"
+    )
+)
+```
+### Preliminary FE Data Visualizations
+#### Entire U.S.
+The plot below visualizes the number of fatal encounters per year for all of the United States.
+
+```{ojs}
+abbreviated_states_obj = ({
+  AL: 'Alabama',
+  AK: 'Alaska' ,
+  AS: 'American Samoa',
+  AZ: 'Arizona',
+  AR: 'Arkansas',
+  CA: 'California',
+  CO: 'Colorado',
+  CT: 'Connecticut',
+  DE: 'Delaware',
+  DC: 'District of Columbia',
+  FL: 'Florida',
+  GA: 'Georgia',
+  GU: 'Guam',
+  HI: 'Hawaii',
+  ID: 'Idaho',
+  IL: 'Illinois',
+  IN: 'Indiana',
+  IA: 'Iowa',
+  KS: 'Kansas',
+  KY: 'Kentucky',
+  LA: 'Louisiana',
+  ME: 'Maine',
+  MD: 'Maryland',
+  MA: 'Massachusetts',
+  MI: 'Michigan',
+  MN: 'Minnesota',
+  MS: 'Mississippi',
+  MO: 'Missouri',
+  MT: 'Montana',
+  NE: 'Nebraska',
+  NV: 'Nevada',
+  NH: 'New Hampshire',
+  NJ: 'New Jersey',
+  NM: 'New Mexico',
+  NY: 'New York',
+  NC: 'North Carolina',
+  ND: 'North Dakota',
+  OH: 'Ohio',
+  OK: 'Oklahoma',
+  OR: 'Oregon',
+  PA: 'Pennsylvania',
+  PR: 'Puerto Rico',
+  RI: 'Rhode Island',
+  SC: 'South Carolina',
+  SD: 'South Dakota',
+  TN: 'Tennessee',
+  TX: 'Texas',
+  UT: 'Utah',
+  VT: 'Vermont',
+  VI: 'Virgin Islands',
+  VA: 'Virginia',
+  WA: 'Washington',
+  WV: 'West Virginia',
+  WI: 'Wisconsin',
+  WY: 'Wyoming',
+})
+tidy_w_race = transpose(fe_data).map(d => ({date: new Date(d[' Date of injury resulting in death (month/day/year)']).getFullYear(), count: 1, raceImputed: d['Race with imputations'], race: d.Race, state: abbreviated_states_obj[d.State]}))
+```
+
+```{ojs}
+viewof race_imputed = Inputs.radio(new Map([["Race with imputations", 'raceImputed'], ["Race with no imputations", 'race']]), {value: 'raceImputed', label: "Race imputed?"})
+```
+
+```{ojs}
+Plot.plot({
+  width: 928,
+  height: 500,
+  x: {tickFormat: ""},
+  y: {tickSpacing: 50},
+  color: {legend: true},
+  marks: [
+  Plot.barY(tidy_w_race, {x: 'date', y: 'count', fill: race_imputed, sort: race_imputed}),
+  ]
+})
+```
+
+#### For more visualizations, visit <https://know-systemic-racism.github.io/fe-search-viz.html>

@@ -1,0 +1,21 @@
+---
+title: "Grand Tour Project"
+jupyter: python3
+execute: 
+  freeze: true
+  echo: false
+format:
+  html:
+    code-fold: true
+image: "data/grand-tour.png"
+multipleLeads: false
+lead:
+  - name: Giovanna Ceserani
+    designation: Faculty Director of CESTA and Associate Professor of Classics
+multipleInterns: false
+intern:
+  - name: Raagavi Ragothaman
+    quarter: Summer, 2023
+---
+## Project Description
+In the 18th century, thousands of Northern Europeans traveled to Italy for a journey of cultural and symbolic capital that they called the Grand Tour. These travels were a formative institution of modernity and contributed to a massive reimagining of politics and the arts, ideas about leisure, the market for culture, and the practices of professionalism. Since 2008, the Grand Tour Project (grandtour.stanford.edu) has generated digital tools, analyses, and visualizations to bring us closer to the diverse travelers who collectively represent 18th-century travel to Italy. We have been digitizing and enhancing John Ingamells’ Dictionary of British and Irish Travelers to Italy 1701-1800 to create a searchable database of more than six thousand entries. This past year the project’s focus has been on preparing this interactive database and an accompanying digital volume for publication with the title A World Made by Travel: The Digital Grand Tour for the Stanford University Press Digital Series. CESTA intern alumni Ashwin Ramaswami and Ryan Tan returned to the project to work on this exciting phase as we refined both development and design to satisfy the press’s guidelines, anonymous reviewers’ comments, digital accessibility, and best practices for digital sustainability and preservation. Raagavi Ragothaman, a CS coterm master’s student, also contributed in crucial ways, focusing on interactivity features and data visualizations.
